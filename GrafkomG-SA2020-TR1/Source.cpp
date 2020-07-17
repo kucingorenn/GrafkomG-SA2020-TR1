@@ -297,16 +297,16 @@ void myKeyboard(unsigned char key, int x, int y) {
 void Special(int key, int x, int y) {
 	switch (key) {
 	case GLUT_KEY_UP: //CameraUP
-		glTranslatef(0.0, 4.0, 0.0);
-		break;
-	case GLUT_KEY_DOWN: //CameraDown
 		glTranslatef(0.0, -4.0, 0.0);
 		break;
+	case GLUT_KEY_DOWN: //CameraDown
+		glTranslatef(0.0, 4.0, 0.0);
+		break;
 	case GLUT_KEY_LEFT: //CameraLeft
-		glTranslatef(-4.0, 0.0, 0.0);
+		glTranslatef(4.0, 0.0, 0.0);
 		break;
 	case GLUT_KEY_RIGHT: //CameraRight
-		glTranslatef(4.0, 0.0, 0.0);
+		glTranslatef(-4.0, 0.0, 0.0);
 		break;
 	}
 	Display();
