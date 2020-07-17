@@ -152,6 +152,33 @@ void Display(void) {
 	glVertex3f(-10, 15, -30);
 	glVertex3f(-5, 15, 10);
 
+	glColor3ub(180, 180, 180); //BelakangBesar
+	glVertex3f(20, 0, -30);
+	glVertex3f(-30, 0, -30);
+	glVertex3f(-30, 15, -30);
+	glVertex3f(20, 15, -30);
+
+	glVertex3f(20, 0, -60);
+	glVertex3f(-30, 0, -60);
+	glVertex3f(-30, 12, -60);
+	glVertex3f(20, 12, -60);
+
+	glVertex3f(20, 0, -30);
+	glVertex3f(20, 0, -60);
+	glVertex3f(20, 12, -60);
+	glVertex3f(20, 15, -30);
+
+	glVertex3f(-30, 0, -30);
+	glVertex3f(-30, 0, -60);
+	glVertex3f(-30, 12, -60);
+	glVertex3f(-30, 15, -30);
+
+	glColor3ub(150, 150, 150);
+	glVertex3f(-30, 15, -30);
+	glVertex3f(20, 15, -30);
+	glVertex3f(20, 12, -60);
+	glVertex3f(-30, 12, -60);
+
 	glEnd();
 
 	glBegin(GL_POLYGON);
@@ -168,6 +195,7 @@ void Display(void) {
 	glVertex3f(20, 15, -10);
 	glVertex3f(-19, 15, 10);
 	glEnd();
+
 
 	glPushMatrix();
 	glPopMatrix();
