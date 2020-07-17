@@ -1,6 +1,10 @@
 #include <iostream>
 #include <GL/freeglut.h>
 
+float xpos = 0;
+float deltax = 1;
+bool toRight = true;
+
 void Display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -197,7 +201,15 @@ void Display(void) {
 	glEnd();
 
 
+
 	glPushMatrix();
+	glTranslatef(-80, 90, 0);//matahari
+	glColor3f(1, 1, 0);
+	glutSolidSphere(5.0, 100, 100);
+
+	glTranslatef(-80 + xpos, 80, 0);//awan
+	glColor3f(1, 1, 0);
+	glutSolidSphere(3.0, 100, 100);
 	glPopMatrix();
 	glutSwapBuffers();
 }
@@ -205,12 +217,41 @@ void Display(void) {
 void myinit(void) {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+	GLfloat ambientlight[] = { 0.2, 0.2, 0.2, 1.0 };
+	GLfloat diffuselight[] = { 0.8, 0.8, 0.8, 1.0 };
+	GLfloat specularlight[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_position[] = { -80.0, 50.0, 50.0, 1.0 };
+	glShadeModel(GL_SMOOTH);
+	
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientlight);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuselight);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, specularlight);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
 	glColor3f(1.0, 0.0, 0.0);
 	glPointSize(2.0);
 	glShadeModel(GL_SMOOTH);
-	//glMatrixMode(GL_MODELVIEW);
-	//glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
 	glOrtho(-100, 100, -100, 100, -100, 100);
+}
+
+void reshape(int w, int h)
+{
+	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	if (w <= h)
+		glOrtho(-100, 100, -100 * (GLfloat)h / (GLfloat)w,
+			100 * (GLfloat)h / (GLfloat)w, -100.0, 100.0);
+	else
+		glOrtho(-100 * (GLfloat)w / (GLfloat)h,
+			100 * (GLfloat)w / (GLfloat)h, -100, 100, -100, 100);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
 void myKeyboard(unsigned char key, int x, int y) {
@@ -271,6 +312,26 @@ void Special(int key, int x, int y) {
 	Display();
 }
 
+void timer(int) {
+	glutPostRedisplay();
+	glutTimerFunc(1000 / 60, timer, 0);
+
+	if (xpos < 100 && toRight) {
+		xpos += deltax;
+	}
+	else {
+		toRight = false;
+	}
+
+	if (xpos > -100 && !toRight) {
+		xpos -= deltax;
+	}
+	else {
+		toRight = true;
+	}
+
+}
+
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -280,7 +341,9 @@ int main(int argc, char** argv) {
 
 	myinit();
 
+	glutTimerFunc(0, timer, 0);
 	glutDisplayFunc(Display);
+	glutReshapeFunc(reshape);
 	glutKeyboardFunc(myKeyboard);
 	glutSpecialFunc(Special);
 
