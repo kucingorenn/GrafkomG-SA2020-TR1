@@ -4,10 +4,20 @@
 float xpos = 0;
 float deltax = 1;
 bool toRight = true;
+float xrot = 0.0f;
+float yrot = 0.0f;
+float xdiff = 0.0f;
+float ydiff = 0.0f;
+bool mouseDown = false;
 
 void Display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glLoadIdentity();
+	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	glRotatef(xrot, 1.0f, 0.0f, 0.0f);
+	glRotatef(yrot, 0.0f, 1.0f, 0.0f);
+	
 	glBegin(GL_QUADS);
 	glColor3ub(178, 190, 158);
 	glVertex3f(-100, 0, -100);
@@ -216,15 +226,16 @@ void Display(void) {
 
 void myinit(void) {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	glEnable(GL_DEPTH_TEST);
 
 	GLfloat ambientlight[] = { 0.2, 0.2, 0.2, 1.0 };
 	GLfloat diffuselight[] = { 0.8, 0.8, 0.8, 1.0 };
 	GLfloat specularlight[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat light_position[] = { -80.0, 50.0, 50.0, 1.0 };
-	glShadeModel(GL_SMOOTH);
+	GLfloat light_position[] = { -80.0, 00.0, 50.0, 1.0 };
 	
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientlight);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuselight);
@@ -234,8 +245,7 @@ void myinit(void) {
 	glColor3f(1.0, 0.0, 0.0);
 	glPointSize(2.0);
 	glShadeModel(GL_SMOOTH);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
 	glOrtho(-100, 100, -100, 100, -100, 100);
 }
 
@@ -254,58 +264,55 @@ void reshape(int w, int h)
 	glLoadIdentity();
 }
 
-void myKeyboard(unsigned char key, int x, int y) {
-	switch (key) {
-	case 'w': //LookUP
-	case 'W':
-		glRotatef(3.0, 1.0, 0.0, 0.0);
-		break;
-	case 's': //LookDown
-	case 'S':
-		glRotatef(-3.0, 1.0, 0.0, 0.0);
-		break;
-	case 'a': //LookLeft
-	case 'A':
-		glRotatef(3.0, 0.0, 1.0, 0.0);
-		break;
-	case 'd': //LookRight
-	case 'D':
-		glRotatef(-3.0, 0.0, 1.0, 0.0);
-		break;
-
-	case 'z': //RotateClock
-	case 'Z':
-		glRotatef(3.0, 0.0, 0.0, 1.0);
-		break;
-	case 'x': //RotateCounterClock
-	case 'X':
-		glRotatef(-3.0, 0.0, 0.0, 1.0);
-		break;
-
-	case 'i'://ZoomIn
-	case 'I':
-		glScalef(1.05, 1.05, 1.05);
-		break;
-	case 'o'://ZoomOut
-	case 'O':
-		glScalef(0.95, 0.95, 0.95);
-		break;
+void idle()
+{
+	if (!mouseDown)
+	{
+		xrot += 0.3f;
+		yrot += 0.4f;
 	}
-	Display();
+	glutPostRedisplay();
 }
 
-void Special(int key, int x, int y) {
+void mouse(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		mouseDown = true;
+		xdiff = x - yrot;
+		ydiff = -y + xrot;
+	}
+	else
+		mouseDown = false;
+}
+
+void mouseMotion(int x, int y)
+{
+	if (mouseDown)
+	{
+		yrot = x - xdiff;
+		xrot = y + ydiff;
+
+		glutPostRedisplay();
+	}
+}
+
+void myKeyboard(unsigned char key, int x, int y) {
 	switch (key) {
-	case GLUT_KEY_UP: //CameraUP
-		glTranslatef(0.0, -4.0, 0.0);
+	case 'w'://ZoomIn
+	case 'W':
+		glScalef(1.05, 1.05, 1.05);
 		break;
-	case GLUT_KEY_DOWN: //CameraDown
-		glTranslatef(0.0, 4.0, 0.0);
+	case 's'://ZoomOut
+	case 'S':
+		glScalef(0.95, 0.95, 0.95);
 		break;
-	case GLUT_KEY_LEFT: //CameraLeft
+	case 'a':
+	case 'A': //CameraLeft
 		glTranslatef(4.0, 0.0, 0.0);
 		break;
-	case GLUT_KEY_RIGHT: //CameraRight
+	case 'd':
+	case 'D': //CameraRight
 		glTranslatef(-4.0, 0.0, 0.0);
 		break;
 	}
@@ -336,16 +343,18 @@ int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(500, 500);
-	glutInitWindowPosition(0, 0);
+	glutInitWindowPosition(250, 80);
 	glutCreateWindow("Bimo Adam - 672018274");
 
 	myinit();
 
-	glutTimerFunc(0, timer, 0);
 	glutDisplayFunc(Display);
+	glutTimerFunc(0, timer, 0);
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(myKeyboard);
-	glutSpecialFunc(Special);
+	glutMouseFunc(mouse);
+	glutMotionFunc(mouseMotion);
+
 
 	glutMainLoop();
 	return 0;
