@@ -31,7 +31,7 @@ void Display(void) {
 	glTranslatef(xtra, ytra, ztra);
 	
 	glBegin(GL_QUADS);
-	glColor3ub(178, 190, 158);
+	glColor3ub(100, 190, 108);
 	glVertex3f(-100, 0, -100);
 	glVertex3f(-100, 0, 100);
 	glVertex3f(100, 0, 100);
@@ -39,7 +39,7 @@ void Display(void) {
 	glEnd();
 
 	glBegin(GL_QUADS);
-	glColor3f(1.0, 0.0, 0.0); //Hall
+	glColor3f(0.75, 0.75, 0.75); //Hall
 	glVertex3f(-10, 0, 25);
 	glVertex3f(-10, 5, 25);
 	glVertex3f(10, 5, 25);
@@ -65,7 +65,7 @@ void Display(void) {
 	glVertex3f(10, 5, 20);
 	glVertex3f(10, 5, 25);
 
-	glColor3f(1, 1, 0);
+	glColor3f(0.75, 0.75, 0.75);
 	glVertex3f(-3, 0, 20); //LorongHall
 	glVertex3f(-3, 1, 20);
 	glVertex3f(-3, 1, 10);
@@ -205,6 +205,60 @@ void Display(void) {
 	glVertex3f(20, 12, -60);
 	glVertex3f(-30, 12, -60);
 
+	//OBJEK
+
+	glColor3ub(10, 10, 150);//gedung BCA
+	glVertex3f(-40, 0, 20);
+	glVertex3f(-40, 40, 20);
+	glVertex3f(-40, 40, 35);
+	glVertex3f(-40, 0, 35);
+
+	glVertex3f(-55, 0, 20);
+	glVertex3f(-55, 40, 20);
+	glVertex3f(-55, 40, 35);
+	glVertex3f(-55, 0, 35);
+
+	glVertex3f(-55, 0, 20);
+	glVertex3f(-55, 40, 20);
+	glVertex3f(-40, 40, 20);
+	glVertex3f(-40, 0, 20);
+
+	glVertex3f(-55, 0, 35);
+	glVertex3f(-55, 40, 35);
+	glVertex3f(-40, 40, 35);
+	glVertex3f(-40, 0, 35);
+
+	glVertex3f(-55, 40, 20);
+	glVertex3f(-40, 40, 20);
+	glVertex3f(-40, 40, 35);
+	glVertex3f(-55, 40, 35);
+
+	glVertex3f(-20, 0, 40); //papan iklan
+	glVertex3f(-20, 5, 40);
+	glVertex3f(-19, 5, 41);
+	glVertex3f(-19, 0, 41);
+
+	glColor3f(1, 0.8, 0);
+	glVertex3f(-19, 2, 40);
+	glVertex3f(-19, 5, 40);
+	glVertex3f(-17, 5, 40);
+	glVertex3f(-17, 2, 40);
+
+	glVertex3f(-19, 2, 41);
+	glVertex3f(-19, 5, 41);
+	glVertex3f(-17, 5, 41);
+	glVertex3f(-17, 2, 41);
+
+	glVertex3f(-19, 2, 40);
+	glVertex3f(-19, 5, 40);
+	glVertex3f(-19, 5, 41);
+	glVertex3f(-19, 2, 41);
+
+	glVertex3f(-3, 2, 26); //billboard
+	glVertex3f(-3, 4, 26);
+	glVertex3f(3, 4, 26);
+	glVertex3f(3, 2, 26);
+
 	glEnd();
 
 	glBegin(GL_POLYGON);
@@ -225,8 +279,8 @@ void Display(void) {
 
 
 	glPushMatrix();
-	glTranslatef(-80, 90, 0);//matahari
-	glColor3f(1, 1, 0);
+	glTranslatef(-80, 90, 0);//bulan
+	glColor3f(0.8, 0.8, 0.8);
 	glutSolidSphere(5.0, 100, 100);
 
 	glTranslatef(-80 + xpos, 80, 0);//awan
