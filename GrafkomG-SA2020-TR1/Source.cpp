@@ -1,22 +1,34 @@
 #include <iostream>
 #include <GL/freeglut.h>
 
+//tweening
 float xpos = 0;
 float deltax = 1;
 bool toRight = true;
+//mouse
 float xrot = 0.0f;
 float yrot = 0.0f;
 float xdiff = 0.0f;
 float ydiff = 0.0f;
 bool mouseDown = false;
+//keyboard
+float xsca = 1.0f;
+float ysca = 1.0f;
+float zsca = 1.0f;
+float xtra = 0.0f;
+float ytra = 0.0f;
+float ztra = 0.0f;
+
 
 void Display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	gluLookAt(0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 	glRotatef(xrot, 1.0f, 0.0f, 0.0f);
 	glRotatef(yrot, 0.0f, 1.0f, 0.0f);
+	glScalef(xsca, ysca, zsca);
+	glTranslatef(xtra, ytra, ztra);
 	
 	glBegin(GL_QUADS);
 	glColor3ub(178, 190, 158);
@@ -246,7 +258,7 @@ void myinit(void) {
 	glPointSize(2.0);
 	glShadeModel(GL_SMOOTH);
 	glMatrixMode(GL_MODELVIEW);
-	glOrtho(-100, 100, -100, 100, -100, 100);
+	glOrtho(-1000, 1000, -1000, 1000, -1000, 1000);
 }
 
 void reshape(int w, int h)
@@ -298,23 +310,42 @@ void mouseMotion(int x, int y)
 }
 
 void myKeyboard(unsigned char key, int x, int y) {
+
 	switch (key) {
 	case 'w'://ZoomIn
 	case 'W':
-		glScalef(1.05, 1.05, 1.05);
+		//glScalef(1.05, 1.05, 1.05);
+		xsca += 0.1;
+		ysca += 0.1;
+		zsca += 0.1;
 		break;
 	case 's'://ZoomOut
 	case 'S':
-		glScalef(0.95, 0.95, 0.95);
+		xsca += -0.1;
+		ysca += -0.1;
+		zsca += -0.1;
 		break;
 	case 'a':
 	case 'A': //CameraLeft
-		glTranslatef(4.0, 0.0, 0.0);
+		xtra += 4.0;
 		break;
 	case 'd':
 	case 'D': //CameraRight
-		glTranslatef(-4.0, 0.0, 0.0);
+		xtra -= 4.0;
 		break;
+
+	//case GLUT_KEY_UP: //CameraUP
+	//	glTranslatef(0.0, 4.0, 0.0);
+	//	break;
+	//case GLUT_KEY_DOWN: //CameraDown
+	//	glTranslatef(0.0, -4.0, 0.0);
+	//	break;
+	//case GLUT_KEY_LEFT: //CameraLeft
+	//	glTranslatef(-4.0, 0.0, 0.0);
+	//	break;
+	//case GLUT_KEY_RIGHT: //CameraRight
+	//	glTranslatef(4.0, 0.0, 0.0);
+	//	break;
 	}
 	Display();
 }
@@ -357,5 +388,5 @@ int main(int argc, char** argv) {
 
 
 	glutMainLoop();
-	return 0;
+	return 1;
 }
