@@ -331,7 +331,6 @@ void Display(void) {
 	glEnd();
 
 	
-
 	glBegin(GL_POLYGON);
 	glColor3ub(100, 100, 100);
 	glVertex3f(10, 50, -5); //HotelGrandIndonesiaAtap
@@ -504,7 +503,7 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(250, 80);
-	glutCreateWindow("Bimo Adam - 672018274");
+	glutCreateWindow("Bimo Adam - 672018274 | Yosefhin R.Y - 672018412");
 
 	myinit();
 
