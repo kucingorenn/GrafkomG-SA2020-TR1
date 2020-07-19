@@ -19,7 +19,17 @@ float xtra = 0.0f;
 float ytra = 0.0f;
 float ztra = 0.0f;
 
+void drawAwan() {
+	glTranslatef(-80 + xpos, 80, 0);//awan
+	glColor3f(0.8, 0.8, 0.8);
+	glutSolidSphere(3.0, 100, 100);
+}
 
+void drawBulan() {
+	glTranslatef(-80, 90, 0);//bulan
+	glColor3f(0.8, 0.8, 0.8);
+	glutSolidSphere(7.0, 100, 100);
+}
 void Display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -228,6 +238,33 @@ void Display(void) {
 	glVertex3f(-40, 40, 35);
 	glVertex3f(-40, 0, 35);
 
+	glVertex3f(-50, 40, 25);
+	glVertex3f(-50, 42, 25);
+	glVertex3f(-42, 45, 25);
+	glVertex3f(-42, 40, 25);
+
+	glVertex3f(-50, 40, 30);
+	glVertex3f(-50, 42, 30);
+	glVertex3f(-42, 45, 30);
+	glVertex3f(-42, 40, 30);
+
+	glVertex3f(-50, 40, 25);
+	glVertex3f(-50, 42, 25);
+	glVertex3f(-50, 42, 30);
+	glVertex3f(-50, 40, 30);
+
+	glVertex3f(-42, 40, 25);
+	glVertex3f(-42, 45, 25);
+	glVertex3f(-42, 45, 30);
+	glVertex3f(-42, 40, 30);
+
+	glColor3ub(80, 80, 80);
+	glVertex3f(-50, 42, 25);
+	glVertex3f(-42, 45, 25);
+	glVertex3f(-42, 45, 30);
+	glVertex3f(-50, 42, 30);
+
+	glColor3ub(110, 110, 110);
 	glVertex3f(-55, 40, 20);
 	glVertex3f(-40, 40, 20);
 	glVertex3f(-40, 40, 35);
@@ -249,6 +286,7 @@ void Display(void) {
 	glVertex3f(-17, 5, 41);
 	glVertex3f(-17, 2, 41);
 
+	glColor3ub(200, 200, 0);
 	glVertex3f(-19, 2, 40);
 	glVertex3f(-19, 5, 40);
 	glVertex3f(-19, 5, 41);
@@ -259,6 +297,49 @@ void Display(void) {
 	glVertex3f(3, 4, 26);
 	glVertex3f(3, 2, 26);
 
+	glColor3ub(100, 100, 200);
+	glVertex3f(25, 0, 0); //HotelGrandIndonesia
+	glVertex3f(25, 50, 0);
+	glVertex3f(25, 50, 11);
+	glVertex3f(25, 0, 11);
+
+	glVertex3f(25, 0, 0);
+	glVertex3f(25, 50, 0);
+	glVertex3f(18, 50, 0);
+	glVertex3f(18, 0, 0);
+
+	glVertex3f(18, 0, -5);
+	glVertex3f(18, 50, -5);
+	glVertex3f(18, 50, 0);
+	glVertex3f(18, 0, 0);
+
+	glVertex3f(18, 0, -5);
+	glVertex3f(18, 50, -5);
+	glVertex3f(10, 50, -5);
+	glVertex3f(10, 0, -5);
+
+	glVertex3f(25, 0, 11);
+	glVertex3f(25, 50, 11);
+	glVertex3f(10, 50, 11);
+	glVertex3f(10, 0, 11);
+
+	glVertex3f(10, 0, -5);
+	glVertex3f(10, 50, -5);
+	glVertex3f(10, 50, 11);
+	glVertex3f(10, 0, 11);
+
+	glEnd();
+
+	
+
+	glBegin(GL_POLYGON);
+	glColor3ub(100, 100, 100);
+	glVertex3f(10, 50, -5); //HotelGrandIndonesiaAtap
+	glVertex3f(18, 50, -5);
+	glVertex3f(18, 50, 0);
+	glVertex3f(25, 50, 0);
+	glVertex3f(25, 50, 11);
+	glVertex3f(10, 50, 11);
 	glEnd();
 
 	glBegin(GL_POLYGON);
@@ -276,16 +357,10 @@ void Display(void) {
 	glVertex3f(-19, 15, 10);
 	glEnd();
 
-
+	drawAwan();
+	drawBulan();
 
 	glPushMatrix();
-	glTranslatef(-80, 90, 0);//bulan
-	glColor3f(0.8, 0.8, 0.8);
-	glutSolidSphere(5.0, 100, 100);
-
-	glTranslatef(-80 + xpos, 80, 0);//awan
-	glColor3f(1, 1, 0);
-	glutSolidSphere(3.0, 100, 100);
 	glPopMatrix();
 	glutSwapBuffers();
 }
@@ -301,7 +376,7 @@ void myinit(void) {
 	GLfloat ambientlight[] = { 0.2, 0.2, 0.2, 1.0 };
 	GLfloat diffuselight[] = { 0.8, 0.8, 0.8, 1.0 };
 	GLfloat specularlight[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat light_position[] = { -80.0, 00.0, 50.0, 1.0 };
+	GLfloat light_position[] = { -80.0, 0.0, 50.0, 1.0 };
 	
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientlight);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuselight);
@@ -408,14 +483,14 @@ void timer(int) {
 	glutPostRedisplay();
 	glutTimerFunc(1000 / 60, timer, 0);
 
-	if (xpos < 100 && toRight) {
+	if (xpos < 150 && toRight) {
 		xpos += deltax;
 	}
 	else {
 		toRight = false;
 	}
 
-	if (xpos > -100 && !toRight) {
+	if (xpos > 0 && !toRight) {
 		xpos -= deltax;
 	}
 	else {
