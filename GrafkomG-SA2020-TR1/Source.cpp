@@ -1,5 +1,8 @@
+#include "LoadImageBMP.h"
 #include <iostream>
 #include <GL/freeglut.h>
+
+GLuint _textureID;
 
 //tweening
 float xpos = 0;
@@ -30,8 +33,13 @@ void drawBulan() {
 	glColor3f(0.8, 0.8, 0.8);
 	glutSolidSphere(7.0, 100, 100);
 }
+
 void Display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, _textureID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glLoadIdentity();
 	gluLookAt(0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
@@ -50,9 +58,13 @@ void Display(void) {
 
 	glBegin(GL_QUADS);
 	glColor3f(0.75, 0.75, 0.75); //Hall
+	glTexCoord2f(0, 1);
 	glVertex3f(-10, 0, 25);
+	glTexCoord2f(1, 1);
 	glVertex3f(-10, 5, 25);
+	glTexCoord2f(1, 0);
 	glVertex3f(10, 5, 25);
+	glTexCoord2f(0, 0);
 	glVertex3f(10, 0, 25);
 
 	glVertex3f(-10, 0, 20);
@@ -358,14 +370,17 @@ void Display(void) {
 
 	drawAwan();
 	drawBulan();
-
+	glDisable(GL_TEXTURE_2D);
 	glPushMatrix();
 	glPopMatrix();
 	glutSwapBuffers();
+
 }
 
 void myinit(void) {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
+
+	_textureID = loadBMP_custom("C:/Users/BIMO/source/repos/GrafkomG - SA2020 - TR1/GrafkomG - SA2020 - TR1/texture_depan.bmp");
 
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
